@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4 Months 💙💗</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+
+body{
+    height:100vh;
+    background:linear-gradient(135deg,#a6dcff,#ffd1e8);
+    overflow:hidden;
+    color:white;
+}
+
+/* หน้าจอ */
+.screen{
+    position:absolute;
+    width:100%;height:100%;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    padding:24px;
+}
+.screen.active{display:flex}
+
+h1,h2{
+    margin-bottom:22px;
+    text-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+
+p{line-height:1.7;max-width:360px}
+
+/* ปุ่ม */
+button{
+    margin-top:22px;
+    padding:14px 28px;
+    border:none;
+    border-radius:999px;
+    background:white;
+    color:#ff7fb8;
+    font-size:1rem;
+    cursor:pointer;
+    box-shadow:0 10px 25px rgba(0,0,0,.18);
+    transition:.25s;
+}
+button:hover{transform:scale(1.08)}
+
+/* กล่องของขวัญ */
+.gift-box{
+    width:180px;height:140px;
+    background:linear-gradient(135deg,#ffb6d9,#ffe0f0);
+    border-radius:22px;
+    position:relative;
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+}
+.gift-lid{
+    position:absolute;
+    top:-45px;left:0;
+    width:100%;height:60px;
+    background:linear-gradient(135deg,#ff9fcd,#ffd1e8);
+    border-radius:22px 22px 16px 16px;
+    transition:.8s ease;
+}
+.gift-box.open .gift-lid{
+    transform:translateY(-80px) rotate(-8deg);
+    opacity:0;
+}
+.ribbon{
+    position:absolute;
+    width:22px;height:100%;
+    background:#ff6fae;
+    left:50%;transform:translateX(-50%);
+}
+
+/* รูป */
+img{
+    width:240px;
+    border-radius:26px;
+    box-shadow:0 14px 32px rgba(0,0,0,.3);
+    margin-bottom:18px;
+}
+
+/* fade */
+.fade-item{
+    transition:opacity .6s ease, transform .6s ease;
+}
+.fade-out{
+    opacity:0;
+    transform:translateY(-20px);
+}
+
+/* หัวใจ */
+.heart{
+    position:fixed;
+    bottom:-20px;
+    font-size:22px;
+    animation:rise 6s linear forwards;
+}
+@keyframes rise{
+    to{transform:translateY(-120vh);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="song">
+    <source src="song.mp3" type="audio/mp3">
+</audio>
+<audio id="pop">
+    <source src="pop.mp3" type="audio/mp3">
+</audio>
+
+<!-- หน้า 1 -->
+<div class="screen active" id="s1">
+    <h1>เธอรู้ไหมมม วันนี้วันอะรายยยย 🤍</h1>
+    <button onclick="wrong()">วันธรรมดาอะ</button>
+    <button onclick="startAnniversary()">วันครบรอบของเรา 💕</button>
+</div>
+
+<!-- หน้า 2 -->
+<div class="screen" id="s2">
+    <div class="gift-box" id="gift">
+        <div class="gift-lid"></div>
+        <div class="ribbon"></div>
+    </div>
+    <p style="margin-top:20px">
+        ของขวัญจากเค้า<br>
+        สำหรับเธอคนพิเศษที่สุด 💙
+    </p>
+    <button onclick="openGift()">เปิดกล่องของขวัญ 🎁</button>
+</div>
+
+<!-- รูป 1 -->
+<div class="screen" id="s3">
+    <img src="img1.jpg" class="fade-item">
+    <p class="fade-item">ขอบคุณที่อยู่ข้างเค้ามาตลอดนะ 🤍</p>
+    <button onclick="nextFade(3,4)">ดูของขวัญต่อ 💗</button>
+</div>
+
+<!-- รูป 2 -->
+<div class="screen" id="s4">
+    <img src="img2.jpg" class="fade-item">
+    <p class="fade-item">ทุกช่วงเวลาที่มีเธอ มันอบอุ่นมากจริงๆ</p>
+    <button onclick="nextFade(4,5)">ดูของขวัญต่อ 💗</button>
+</div>
+
+<!-- รูป 3 -->
+<div class="screen" id="s5">
+    <img src="img3.jpg" class="fade-item">
+    <p class="fade-item">เค้าชอบเวลาที่เธออยู่ใกล้ๆ แบบนี้ที่สุดเลย</p>
+    <button onclick="nextFade(5,6)">ดูของขวัญต่อ 💗</button>
+</div>
+
+<!-- รูป 4 -->
+<div class="screen" id="s6">
+    <img src="img4.jpg" class="fade-item">
+    <p class="fade-item">อยากมีเธออยู่ในทุกวันของเค้าเลยนะ</p>
+    <button onclick="nextFade(6,7)">อ่านจดหมาย 💌</button>
+</div>
+
+<!-- จดหมาย -->
+<div class="screen" id="s7">
+    <h2>วันครบรอบ4เดือน 🤍</h2>
+    <p id="letter"></p>
+</div>
+
+<script>
+const song = document.getElementById("song");
+const pop = document.getElementById("pop");
+
+const letterText = `วันครบรอบ4เดือน
+เราอาจจะผ่านอะไรเยอะมากทั้งร้องไห้ทั้งมีความสุขด้วยกันและเค้าขอบคุณหนูที่เข้าใจเค้าบางอย่างที่เค้าอาจจะทำเกินไปและชอบทำตัวเป็นห่วงตลอดและชอบทำตัวเป็นเด็กเค้าและให้ความมั่นใจในตัวเค้าแม้ในวันที่เราทะเลาะก็ตามและปรับตัวเข้ากับเค้าได้และเป็นสีรุ้งในชีวิตเค้าทำให้เค้ายิ้มเยอะได้ขนาดนี้`;
+
+function playPop(){
+    pop.currentTime=0;
+    pop.play();
+}
+
+function wrong(){
+    playPop();
+    alert("งื้อออ ผิดอะ 😤\nคิดดีๆ อีกทีน้าา 💗");
+}
+
+function startAnniversary(){
+    playPop();
+    song.currentTime=0;
+    song.play();
+    setTimeout(()=>song.pause(),30000);
+    go(1,2);
+}
+
+function openGift(){
+    playPop();
+    document.getElementById("gift").classList.add("open");
+    setTimeout(()=>go(2,3),800);
+}
+
+function go(a,b){
+    document.getElementById("s"+a).classList.remove("active");
+    document.getElementById("s"+b).classList.add("active");
+    if(b===7) typeLetter();
+}
+
+function nextFade(from,to){
+    playPop();
+    const s=document.getElementById("s"+from);
+    s.querySelectorAll(".fade-item").forEach(el=>el.classList.add("fade-out"));
+    setTimeout(()=>{
+        go(from,to);
+        s.querySelectorAll(".fade-item").forEach(el=>el.classList.remove("fade-out"));
+    },600);
+}
+
+function typeLetter(){
+    let i=0;
+    const el=document.getElementById("letter");
+    const t=setInterval(()=>{
+        el.innerHTML+=letterText[i]||"";
+        i++;
+        if(i>=letterText.length) clearInterval(t);
+    },45);
+    hearts();
+}
+
+function hearts(){
+    setInterval(()=>{
+        const h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML=Math.random()>0.5?"💗":"🤍";
+        h.style.left=Math.random()*100+"vw";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),6000);
+    },500);
+}
+</script>
+
+</body>
+</html>
